@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<style type="text/css">
+  body {
+    margin: 0;
+  }
+
+  .container {
+    background-color: #f9f9f9;
+    position: relative;
+    cursor: default; /* override .leaflet-container */
+  }
+
+  .letter.portrait {
+    width: 8.5in;
+    padding-bottom: 11in;
+    /* width: 77.2727%; */
+    /* padding-bottom: 100%; */
+  }
+
+  .letter.landscape {
+    width: 10.5in;
+    /* padding-bottom: 8.475in; */ /* visually adjusted using Chrome's print dialog */
+    padding-bottom: 7.925in; /* visually adjusted using Chrome's print dialog */
+    /* width-bottom: 100%; */
+    /* padding-bottom: 77.2727%; */
+  }
+
+  .letter.landscapeX {
+    width: 11in;
+    padding-bottom: 8.499in; /* visually adjusted using wkhtmltopdf w/ no margins */
+  }
+
+  .dot {
+    position: absolute;
+    z-index: 1;
+  }
+
+  #A {
+    right: 4.85in;
+    bottom: 6.87085in;
+  }
+
+  #B {
+    right: 4.64in;
+    bottom: 6.87085in;
+  }
+
+  #C {
+    right: 0.13in; 
+    bottom: 6.87123in;
+  }
+
+  #D {
+    right: 0.13in;
+    bottom: 2.19in;
+  }
+
+  #E {
+    right: 1.42in;
+    bottom: 0.13in;
+  }
+
+  .letter.landscape > #F {
+    right: 9.87in;
+    bottom: 1.48in;
+  }
+
+  .letter.landscape > #G {
+    right: 9.87in;
+    bottom: 1.69in;
+  }
+
+  #qrcode {
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    right: 0;
+    padding-left: 5px;
+    padding-top: 5px;
+    background-color: white;
+  }
+</style>
+<script src="http://davidshimjs.github.io/qrcodejs/qrcode.min.js"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+</head>
+<body>
+  <div class="container letter landscape" id="map">
+    <img class="dot" id="A" src="circle.svg">
+    <img class="dot" id="B" src="circle.svg">
+    <img class="dot" id="C" src="circle.svg">
+    <img class="dot" id="D" src="circle.svg">
+    <img class="dot" id="E" src="circle.svg">
+    <img class="dot" id="F" src="circle.svg">
+    <img class="dot" id="G" src="circle.svg">
+
+    <div id="qrcode"></div>
+  </div>
+
+  <script>
+    var map = L.map("map", {
+      attributionControl: false,
+      zoomControl: false,
+      dragging: false,
+      touchZoom: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      tap: false
+    });
+    
+    // map.setView([47.6036, -122.3294], 17);
+
+    // tiles at highest possible resolution, using the detectRetina trick to effectively double the resolution again
+    // L.tileLayer("http://{s}.tile.stamen.c, om/toner/{z}/{x}/{y}@2x.png", {
+    L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      tileSize: 128,
+      zoomOffset: 1
+    }).addTo(map);
+
+    L.control.scale({
+      maxWidth: 200
+    }).addTo(map);
+
+    new QRCode("qrcode", {
+      text: "http://fieldpapers.org/atlas.php?id=7qqg7cd5%2FA1",
+      width: 128,
+      height: 128,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    map.fitBounds([
+      [23.748376161287, 90.355454834124],
+      [23.751459714022, 90.360282810188]
+    ]);
+
+  </script>
+</body>
+</html>
